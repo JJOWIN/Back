@@ -4,7 +4,12 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
+
 
 @Entity
 @Getter @Setter
@@ -17,20 +22,35 @@ public class Project {
     private String name;
 
     private String category;
+    
+    private String contestUrl;
 
-    private String contest_url;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "leader_id")
+    private User leader;
 
-    private String school_name;
+    private String schoolName;
 
     private String description;
 
-    private String status;
+    @Enumerated(EnumType.STRING)
+    private ProjectStatus status;    //프로젝트 진행상태 [INSPECTION, PROGRESS, COMPLETION]
 
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date start_date;
+    private int likeCount;
 
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date end_date;
+    private LocalDate startDate;
 
-    private int like_count;
+    private LocalDate endDate;
+
+    @OneToMany(mappedBy = "project")
+    private List<ProjectSkill> projectSkills = new ArrayList<>();
+
+    @OneToMany(mappedBy = "project")
+    private List<RecruitInfo> recruitInfos = new ArrayList<>();
+
+    @OneToMany(mappedBy = "project")
+    private List<MemberInfo> memberInfos = new ArrayList<>();
+
+//    private List<Comment> comments = new ArrayList<>();
+
 }
