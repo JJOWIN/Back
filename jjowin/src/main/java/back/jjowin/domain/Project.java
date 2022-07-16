@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+
 @Entity
 @Getter @Setter
 public class Project {
@@ -21,7 +22,7 @@ public class Project {
     private String name;
 
     private String category;
-
+    
     private String contestUrl;
 
     @ManyToOne(fetch = FetchType.LAZY)
