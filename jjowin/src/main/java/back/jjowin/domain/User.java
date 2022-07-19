@@ -53,4 +53,7 @@ public class User extends BaseTimeEntity {
     @OneToMany(mappedBy = "user")
     private List<Comment> comments;
 
+    @OneToMany(mappedBy = "leader")
+    private List<Project> leaderProjects;
+
 }
