@@ -57,4 +57,62 @@ public class UserServiceTest {
         //then
         fail("실패해야함");
     }
+
+    @Test
+    public void 로그인(){
+        //given
+        User user = new User();
+        user.setEmail("abcd@abc.com");
+        user.setPassword("1234");
+        userService.signUp(user);
+
+        //when
+        User loginUser = new User();
+        loginUser.setEmail("abcd@abc.com");
+        loginUser.setPassword("1234");
+        User findUser = userService.login(loginUser);
+
+        //then
+        assertEquals(user, findUser);
+
+    }
+
+    @Test(expected = IllegalStateException.class)
+    public void 로그인이메일오류(){
+        //given
+        User user = new User();
+        user.setEmail("abcd@abc.com");
+        user.setPassword("1234");
+        userService.signUp(user);
+
+        //when
+        User loginUser = new User();
+        loginUser.setEmail("abc@abc.com");
+        loginUser.setPassword("1234");
+        User findUser = userService.login(loginUser);
+
+        //then
+        fail("이메일 주소가 유효하지 않은 경우");
+    }
+
+    @Test(expected = IllegalStateException.class)
+    public void 로그인패스워드오류(){
+        //given
+        User user = new User();
+        user.setEmail("abcd@abc.com");
+        user.setPassword("1234");
+        userService.signUp(user);
+
+        //when
+        User loginUser = new User();
+        loginUser.setEmail("abcd@abc.com");
+        loginUser.setPassword("1111");
+        User findUser = userService.login(loginUser);
+
+        //then
+        fail("패스워드가 틀린 경우");
+    }
+
+
+
 }

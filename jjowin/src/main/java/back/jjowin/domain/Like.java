@@ -7,6 +7,7 @@ import javax.persistence.*;
 
 @Entity
 @Getter @Setter
+@Table(name = "Likes")
 public class Like extends BaseTimeEntity {
     @Id
     @GeneratedValue

@@ -9,6 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @Transactional(readOnly = true)
@@ -55,4 +56,21 @@ public class UserService {
             throw new IllegalStateException("이미 존재하는 회원입니다");
         }
     }
+
+    @Transactional
+    public User login(User user){
+        List<User> findUsers = userRepository.findByEmail(user.getEmail());
+        if(findUsers.size() != 1){
+            throw new IllegalStateException("유효하지 않은 이메일입니다.");
+        }
+        String inputPassword = getEncryptPassword(user.getPassword());
+        String findPassword = findUsers.get(0).getPassword();
+        if(!inputPassword.equals(findPassword)){
+            throw new IllegalStateException("비밀번호가 유효하지 않습니다.");
+        }
+
+        return findUsers.get(0);
+
+    }
+
 }
