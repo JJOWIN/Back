@@ -17,7 +17,7 @@ import java.util.Optional;
 public class UserService {
     private final UserRepository userRepository;
 
-    @Transactional
+    @Transactional(readOnly = false)
     public Long signUp(User user){
         validateDuplicateUser(user);
         user.setPassword(getEncryptPassword(user.getPassword()));
@@ -70,7 +70,13 @@ public class UserService {
         }
 
         return findUsers.get(0);
+    }
 
+    public void validateDuplicateNickname(String nickname){
+        List<User> findUsers = userRepository.findByNickname(nickname);
+        if(findUsers.size() != 0){
+            throw new IllegalStateException("닉네임이 중복됩니다.");
+        }
     }
 
 }
