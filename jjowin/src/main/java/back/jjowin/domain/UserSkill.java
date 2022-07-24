@@ -19,4 +19,5 @@ public class UserSkill extends BaseTimeEntity {
     private String name;
 
     private int level;
+
 }
