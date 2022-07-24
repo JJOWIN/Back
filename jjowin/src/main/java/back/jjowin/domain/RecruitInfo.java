@@ -7,7 +7,7 @@ import javax.persistence.*;
 
 @Entity
 @Getter @Setter
-public class RecruitInfo {
+public class RecruitInfo extends BaseTimeEntity{
 
     @Id @GeneratedValue
     @Column(name = "recruit_info_id")
