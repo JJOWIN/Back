@@ -24,9 +24,9 @@ public class ProjectController {
     public ResponseEntity register (@RequestBody ProjectCreateDTO model){
         CustomResponseBody<ProjectCreateDTO> responseBody = new CustomResponseBody<>("프로젝트 등록 성공2");
         try {
-            projectService.register(model.getProject());
-            projectSkillService.register(model.getProjectSkill());
-            recruitInfoService.register(model.getRecruitInfo());
+            Long projectId = projectService.register(model.getProject());
+            projectSkillService.register(model.getProjectSkill(),projectId);
+            recruitInfoService.register(model.getRecruitInfo(),projectId);
 
         } catch (RuntimeException re){
             responseBody.setResultCode(-1);
