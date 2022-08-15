@@ -2,6 +2,8 @@ package back.jjowin.domain;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.ColumnDefault;
+import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
 import java.time.LocalDate;
@@ -36,11 +38,15 @@ public class Project {
     @Enumerated(EnumType.STRING)
     private ProjectStatus status;    //프로젝트 진행상태 [INSPECTION, PROGRESS, COMPLETION]
 
+    @ColumnDefault("0")
     private int likeCount;
 
+    @CreationTimestamp
     private LocalDate startDate;
 
     private LocalDate endDate;
+
+    private String image;
 
     @OneToMany(mappedBy = "project")
     private List<ProjectSkill> projectSkills = new ArrayList<>();

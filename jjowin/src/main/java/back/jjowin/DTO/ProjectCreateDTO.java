@@ -9,6 +9,6 @@ import lombok.Setter;
 @Getter @Setter
 public class ProjectCreateDTO {
     private Project project;
-    private ProjectSkill projectSkill;
+    private ProjectSkill[] projectSkill;
     private RecruitInfo[] recruitInfo;
 }

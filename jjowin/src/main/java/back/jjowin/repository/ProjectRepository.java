@@ -48,7 +48,7 @@ public class ProjectRepository {
      * @param name
      * @return 프로젝트 리스트
      */
-    public List<Project> findByEmail(String name) {
+    public List<Project> findByName(String name) {
         return em.createQuery("select u from Project u WHERE u.name = :name", Project.class)
                 .setParameter("name", name)
                 .getResultList();

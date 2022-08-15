@@ -2,6 +2,7 @@ package back.jjowin.domain;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.ColumnDefault;
 
 import javax.persistence.*;
 
@@ -21,5 +22,6 @@ public class RecruitInfo {
 
     private int count;
 
+    @ColumnDefault("0")
     private int completeCount;
 }
