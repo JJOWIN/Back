@@ -20,4 +20,8 @@ public class UserSkill extends BaseTimeEntity {
 
     private int level;
 
+    public void setUser(User user) {
+        this.user = user;
+        user.getUserSkills().add(this);
+    }
 }
