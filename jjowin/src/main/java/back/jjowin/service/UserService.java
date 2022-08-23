@@ -17,6 +17,9 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import java.util.Optional;
+
+
 @Service
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
@@ -51,7 +54,6 @@ public class UserService {
         if (signupDTO.getUserSkills().isEmpty()) {
             throw new IllegalStateException("스킬을 입력해주세요");
         }
-
         // 유저 정보 저장
         user.setName(signupDTO.getName());
         user.setNickname(signupDTO.getNickname());

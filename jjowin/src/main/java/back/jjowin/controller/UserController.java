@@ -5,16 +5,21 @@ import back.jjowin.domain.CustomResponseBody;
 import back.jjowin.domain.User;
 import back.jjowin.dto.LoginDTO;
 import back.jjowin.dto.SignupDTO;
+import back.jjowin.domain.UserSkill;
 import back.jjowin.service.UserService;
+import back.jjowin.service.UserSkillService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequiredArgsConstructor
 public class UserController {
     private final UserService userService;
+    private final UserSkillService userSkillService;
 
     @PostMapping("/users")
     public ResponseEntity<BaseResponseBody> signup (@RequestBody SignupDTO signupDTO){
