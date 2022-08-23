@@ -67,4 +67,11 @@ public class UserRepository {
                 .setParameter("password", password)
                 .getSingleResult();
     }
+
+    public List<User> findByNickname(String nickname){
+        return em.createQuery("select u from User u WHERE u.nickname = :nickname", User.class)
+                .setParameter("nickname", nickname)
+                .getResultList();
+    }
+
 }
