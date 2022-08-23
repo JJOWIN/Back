@@ -1,4 +1,4 @@
-package back.jjowin.DTO;
+package back.jjowin.dto;
 
 import back.jjowin.domain.Project;
 import back.jjowin.domain.ProjectSkill;

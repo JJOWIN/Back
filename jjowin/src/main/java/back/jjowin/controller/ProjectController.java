@@ -1,7 +1,7 @@
 package back.jjowin.controller;
 
 import back.jjowin.domain.CustomResponseBody;
-import back.jjowin.DTO.ProjectCreateDTO;
+import back.jjowin.dto.ProjectCreateDTO;
 import back.jjowin.service.ProjectService;
 import back.jjowin.service.ProjectSkillService;
 import back.jjowin.service.RecruitInfoService;
