@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -25,21 +26,21 @@ public class User extends BaseTimeEntity {
 
     private String job;
 
-    private int job_level;
+    private int jobLevel;
 
-    private double peer_score;
+    private double peerScore;
 
-    private int peer_count;
+    private int peerCount;
 
-    private String self_intro;
+    private String selfIntro;
 
-    private boolean is_cert;
+    private boolean isCert;
 
-    private boolean is_school;
+    private boolean isSchool;
 
-    private String school_name;
+    private String schoolName;
 
-    private boolean is_deleted;
+    private boolean isDeleted;
 
     @OneToMany(mappedBy = "user")
     private List<UserSkill> userSkills;
@@ -56,11 +57,6 @@ public class User extends BaseTimeEntity {
     @OneToMany(mappedBy = "leader")
     private List<Project> leaderProjects;
 
-    public void addUserSkills(UserSkill userSkill){
-        userSkill.setUser(this);
-        this.getUserSkills().add(userSkill);
-    }
-
     public void addAwards(Award award){
         award.setUser(this);
         this.getAwards().add(award);
@@ -71,4 +67,11 @@ public class User extends BaseTimeEntity {
         this.getLikes().add(like);
     }
 
+    public User() {
+        userSkills = new ArrayList<>();
+        awards = new ArrayList<>();
+        likes = new ArrayList<>();
+        comments = new ArrayList<>();
+        leaderProjects = new ArrayList<>();
+    }
 }
