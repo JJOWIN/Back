@@ -56,4 +56,19 @@ public class User extends BaseTimeEntity {
     @OneToMany(mappedBy = "leader")
     private List<Project> leaderProjects;
 
+    public void addUserSkills(UserSkill userSkill){
+        userSkill.setUser(this);
+        this.getUserSkills().add(userSkill);
+    }
+
+    public void addAwards(Award award){
+        award.setUser(this);
+        this.getAwards().add(award);
+    }
+
+    public void addLikes(Like like){
+        like.setUser(this);
+        this.getLikes().add(like);
+    }
+
 }
