@@ -1,13 +1,13 @@
 spring:
   datasource:
-    url: jdbc:mariadb://43.200.200.255:3306/jjowin
+    url: jdbc:mariadb://localhost:3306/jjowin
     username: root
     password: 12340119
     driver-class-name: org.mariadb.jdbc.Driver
 
   jpa:
     hibernate:
-      ddl-auto: update
+      ddl-auto: create
     properties:
       hibernate:
         format_sql: true
