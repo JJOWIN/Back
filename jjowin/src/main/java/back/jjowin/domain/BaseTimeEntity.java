@@ -17,10 +17,7 @@ import java.time.LocalDateTime;
 @EntityListeners(AuditingEntityListener.class)
 public class BaseTimeEntity {
     @CreatedDate
-    @ColumnDefault("CURRENT_TIMESTAMP()")
     private LocalDateTime createdDate;
     @LastModifiedDate
-   @ColumnDefault("CURRENT_TIMESTAMP()")
-
     private LocalDateTime lastModifiedDate;
 }
