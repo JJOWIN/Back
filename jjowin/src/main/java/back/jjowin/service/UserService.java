@@ -2,11 +2,12 @@ package back.jjowin.service;
 
 import back.jjowin.domain.User;
 import back.jjowin.domain.UserSkill;
-import back.jjowin.dto.LoginDTO;
-import back.jjowin.dto.UserSkillDTO;
-import back.jjowin.dto.SignupDTO;
+import back.jjowin.dto.user.LoginDTO;
+import back.jjowin.dto.user.UserSkillDTO;
+import back.jjowin.dto.user.SignupDTO;
 import back.jjowin.repository.UserRepository;
 import back.jjowin.repository.UserSkillRepository;
+import back.jjowin.vo.UserInfoVO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -17,8 +18,6 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import java.util.Optional;
-
 
 @Service
 @Transactional(readOnly = true)
@@ -26,14 +25,14 @@ import java.util.Optional;
 public class UserService {
     private final UserRepository userRepository;
     private final UserSkillRepository userSkillRepository;
+
     /**
-     * 회원 가입
-     *
+     * * 회원가입
      * @param signupDTO
-     * @return
+     * @return 회원가입한 유저 id
      */
     @Transactional(readOnly = false)
-    public void signUp(SignupDTO signupDTO) {
+    public User signUp(SignupDTO signupDTO) {
         User user = new User();
         if (signupDTO.getName().isBlank()) {
             throw new IllegalStateException("이름이 유효하지 않습니다.");
@@ -44,7 +43,9 @@ public class UserService {
         if (!isValidEmailAddress(signupDTO.getEmail())) {
             throw new IllegalStateException("이메일 형식이 유효하지 않습니다.");
         }
-        validateDuplicateUser(signupDTO.getEmail());
+        if(isDuplicateEmail(signupDTO.getEmail())){
+            throw new IllegalStateException("이메일이 중복됩니다.");
+        }
         if (signupDTO.getJobLevel() < 1 || signupDTO.getJobLevel() > 5) {
             throw new IllegalStateException("직무 숙련도가 유효하지 않습니다.");
         }
@@ -70,12 +71,11 @@ public class UserService {
             userSkill.setName(userSkillDTO.getName());
             userSkillRepository.save(userSkill);
         }
-
+        return user;
     }
 
     /**
      * 비밀번호 암호화
-     *
      * @param password
      * @return 암호화된 비밀번호
      */
@@ -102,19 +102,18 @@ public class UserService {
 
     /**
      * 이메일 중복검사
-     *
      * @param email
      */
-    private void validateDuplicateUser(String email) {
+    public boolean isDuplicateEmail(String email) {
         List<User> findUsers = userRepository.findByEmail(email);
-        if (!findUsers.isEmpty()) {
-            throw new IllegalStateException("이미 존재하는 회원입니다");
+        if (findUsers.isEmpty()) {
+            return false;
         }
+        return true;
     }
 
     /**
      * 이메일 형식 검사
-     *
      * @param email
      * @return
      */
@@ -129,10 +128,15 @@ public class UserService {
         return result;
     }
 
+    /**
+     * 로그인
+     * @param loginDTO
+     * @return
+     */
     @Transactional
     public User login(LoginDTO loginDTO) {
         List<User> findUsers = userRepository.findByEmail(loginDTO.getEmail());
-        if (findUsers.size() != 1) {
+        if (findUsers == null) {
             throw new IllegalStateException("유효하지 않은 이메일입니다.");
         }
         String inputPassword = getEncryptPassword(loginDTO.getPassword());
@@ -144,13 +148,23 @@ public class UserService {
         return findUsers.get(0);
     }
 
-    public void validateDuplicateNickname(String nickname) {
+    /**
+     * 닉네임 중복 검사
+     * @param nickname
+     */
+    public boolean isDuplicateNickname(String nickname) {
         List<User> findUsers = userRepository.findByNickname(nickname);
-        if (findUsers.size() != 0) {
-            throw new IllegalStateException("닉네임이 중복됩니다.");
+        if (findUsers.isEmpty()) {
+            return false;
         }
+        return true;
     }
 
+    /**
+     * id로 유저 정보 가져오기
+     * @param id
+     * @return
+     */
     public User getUserInfo(Long id) {
         User findUser = userRepository.findOne(id);
         if (findUser == null) {

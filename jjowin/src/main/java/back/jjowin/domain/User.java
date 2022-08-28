@@ -1,11 +1,11 @@
 package back.jjowin.domain;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 @Entity
@@ -43,18 +43,23 @@ public class User extends BaseTimeEntity {
     private boolean isDeleted;
 
     @OneToMany(mappedBy = "user")
+    @JsonManagedReference
     private List<UserSkill> userSkills;
 
     @OneToMany(mappedBy = "user")
+    @JsonManagedReference
     private List<Award> awards;
 
     @OneToMany(mappedBy = "user")
+    @JsonManagedReference
     private List<Like> likes;
 
     @OneToMany(mappedBy = "user")
+    @JsonManagedReference
     private List<Comment> comments;
 
     @OneToMany(mappedBy = "leader")
+    @JsonManagedReference
     private List<Project> leaderProjects;
 
     public void addAwards(Award award){

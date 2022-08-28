@@ -23,7 +23,6 @@ public class UserRepository {
 
     /**
      * 유저 인덱스로 검색
-     *
      * @param id 인덱스
      * @return User 클래스
      */
@@ -33,7 +32,6 @@ public class UserRepository {
 
     /**
      * 모든 유저 정보 가져오기
-     *
      * @return 모든 유저 리스트
      */
     public List<User> findAll() {
@@ -44,30 +42,20 @@ public class UserRepository {
 
     /**
      * 이메일로 유저 검색
-     *
      * @param email
      * @return 유저 리스트
      */
     public List<User> findByEmail(String email) {
-        return em.createQuery("select u from User u WHERE u.email = :email", User.class)
+        return em.createQuery("select u from User u WHERE u.email = :email AND u.isDeleted = false", User.class)
                 .setParameter("email", email)
                 .getResultList();
     }
 
     /**
-     * 이메일, 패스워드로 유저 검색
-     *
-     * @param email
-     * @param password
-     * @return User 클래스
+     * 닉네임으로 유저 검색
+     * @param nickname
+     * @return
      */
-    public User findByEmailAndPassword(String email, String password) {
-        return em.createQuery("select u from User u WHERE u.email = :email and u.password = :password", User.class)
-                .setParameter("email", email)
-                .setParameter("password", password)
-                .getSingleResult();
-    }
-
     public List<User> findByNickname(String nickname){
         return em.createQuery("select u from User u WHERE u.nickname = :nickname", User.class)
                 .setParameter("nickname", nickname)
