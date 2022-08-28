@@ -1,4 +1,4 @@
-package back.jjowin.dto;
+package back.jjowin.dto.user;
 
 import lombok.Getter;
 import lombok.Setter;
