@@ -11,6 +11,7 @@ public class SignupDTO {
     private String nickname;
     private String email;
     private String password;
+    private Boolean isReceiveMail;
     private String job;
     private int jobLevel;
     private String selfIntro;

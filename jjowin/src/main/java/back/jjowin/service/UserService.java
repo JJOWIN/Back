@@ -7,7 +7,6 @@ import back.jjowin.dto.user.UserSkillDTO;
 import back.jjowin.dto.user.SignupDTO;
 import back.jjowin.repository.UserRepository;
 import back.jjowin.repository.UserSkillRepository;
-import back.jjowin.vo.UserInfoVO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -62,6 +61,7 @@ public class UserService {
         user.setPassword(getEncryptPassword(signupDTO.getPassword()));
         user.setJob(signupDTO.getJob());
         user.setJobLevel(signupDTO.getJobLevel());
+        user.setIsReceiveMail(signupDTO.getIsReceiveMail());
         user.setSelfIntro(signupDTO.getSelfIntro());
         userRepository.save(user);
         // 유저 스킬 저장
@@ -69,6 +69,7 @@ public class UserService {
             UserSkill userSkill = new UserSkill();
             userSkill.setUser(user);
             userSkill.setName(userSkillDTO.getName());
+            userSkill.setLevel(userSkillDTO.getLevel());
             userSkillRepository.save(userSkill);
         }
         return user;
