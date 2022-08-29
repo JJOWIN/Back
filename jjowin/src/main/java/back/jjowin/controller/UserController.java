@@ -46,7 +46,7 @@ public class UserController {
                 throw new IllegalStateException("로그인 실패");
             }
             HttpSession session = request.getSession();
-            UserInfoVO userInfo = new UserInfoVO(loginUser.getId(), loginUser.getName(), loginUser.getNickname(), loginUser.isCert(), loginUser.isSchool(), loginUser.getSchoolName(), loginUser.isDeleted());
+            UserInfoVO userInfo = new UserInfoVO(loginUser.getId(), loginUser.getName(), loginUser.getNickname(), loginUser.getIsCert(), loginUser.getIsSchool(), loginUser.getSchoolName(), loginUser.getIsDeleted());
             session.setAttribute("userInfo", userInfo);
 
         } catch (IllegalStateException e){
