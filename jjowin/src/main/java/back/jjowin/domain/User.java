@@ -1,11 +1,11 @@
 package back.jjowin.domain;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 @Entity
@@ -34,27 +34,44 @@ public class User extends BaseTimeEntity {
 
     private String selfIntro;
 
-    private boolean isCert;
+    //전화번호
+    private String phone;
 
-    private boolean isSchool;
+    // 메일 수신 동의
+    private Boolean isReceiveMail;
 
+    //핸드폰 본인인증 여부
+    private Boolean isCert;
+
+    //학교 인증 여부
+    private Boolean isSchool;
+
+    //학교 인증 이메일
+    private String schoolEmail;
+
+    //학교 이름
     private String schoolName;
 
-    private boolean isDeleted;
+    private Boolean isDeleted;
 
     @OneToMany(mappedBy = "user")
+    @JsonManagedReference
     private List<UserSkill> userSkills;
 
     @OneToMany(mappedBy = "user")
+    @JsonManagedReference
     private List<Award> awards;
 
     @OneToMany(mappedBy = "user")
+    @JsonManagedReference
     private List<Like> likes;
 
     @OneToMany(mappedBy = "user")
+    @JsonManagedReference
     private List<Comment> comments;
 
     @OneToMany(mappedBy = "leader")
+    @JsonManagedReference
     private List<Project> leaderProjects;
 
     public void addAwards(Award award){
@@ -73,5 +90,9 @@ public class User extends BaseTimeEntity {
         likes = new ArrayList<>();
         comments = new ArrayList<>();
         leaderProjects = new ArrayList<>();
+        isReceiveMail = false;
+        isCert = false;
+        isDeleted = false;
+        isSchool = false;
     }
 }
