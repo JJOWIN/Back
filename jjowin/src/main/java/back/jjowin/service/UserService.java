@@ -136,7 +136,7 @@ public class UserService {
     @Transactional
     public User login(LoginDTO loginDTO) {
         List<User> findUsers = userRepository.findByEmail(loginDTO.getEmail());
-        if (findUsers == null) {
+        if (findUsers.isEmpty()) {
             throw new IllegalStateException("유효하지 않은 이메일입니다.");
         }
         String inputPassword = getEncryptPassword(loginDTO.getPassword());
