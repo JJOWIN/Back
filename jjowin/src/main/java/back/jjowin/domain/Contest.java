@@ -3,10 +3,7 @@ package back.jjowin.domain;
 import lombok.Getter;
 import lombok.Setter;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity
@@ -14,7 +11,7 @@ import java.time.LocalDateTime;
 public class Contest {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "contest_id")
     private Long id;
 
@@ -26,9 +23,11 @@ public class Contest {
 
     private String organizer;
 
-    @Column(length = 1500)
+    @Column(length = 5000)
     private String info;
-
+    @Column(length = 800)
     private String imageUrl;
+
+    private String homepage;
 
 }
