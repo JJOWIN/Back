@@ -1,16 +1,15 @@
 package back.jjowin.controller;
 
-import back.jjowin.domain.CustomResponseBody;
-import back.jjowin.dto.ProjectCreateDTO;
+import back.jjowin.domain.BaseResponseBody;
+import back.jjowin.dto.project.ProjectCreateDTO;
 import back.jjowin.service.ProjectService;
 import back.jjowin.service.ProjectSkillService;
 import back.jjowin.service.RecruitInfoService;
+import back.jjowin.vo.UserInfoVO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
@@ -21,12 +20,22 @@ public class ProjectController {
 
 
     @PostMapping("/projects")
-    public ResponseEntity register (@RequestBody ProjectCreateDTO model){
-        CustomResponseBody<ProjectCreateDTO> responseBody = new CustomResponseBody<>("프로젝트 등록 성공2");
+    public ResponseEntity<BaseResponseBody> register (
+            @RequestBody ProjectCreateDTO projectCreateDTO,
+            @SessionAttribute(name = "userInfo", required = false) UserInfoVO userInfo){
+        BaseResponseBody responseBody = new BaseResponseBody("프로젝트 등록 성공");
         try {
-            Long projectId = projectService.register(model.getProject());
-            projectSkillService.register(model.getProjectSkill(),projectId);
-            recruitInfoService.register(model.getRecruitInfo(),projectId);
+            if(userInfo == null){
+                responseBody.setResultCode(-10000);
+                responseBody.setResultMsg("로그인이 필요한 기능입니다.");
+                return ResponseEntity.badRequest().body(responseBody);
+            }
+            projectCreateDTO.setLeader(userInfo.getId());
+            if (projectCreateDTO.getJoinSchool() == true && userInfo.isSchool() == true) {
+                projectCreateDTO.setSchoolName(userInfo.getSchoolName());
+            }
+
+            projectService.register(projectCreateDTO);
 
         } catch (RuntimeException re){
             responseBody.setResultCode(-1);

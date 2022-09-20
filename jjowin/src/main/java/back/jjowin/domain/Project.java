@@ -24,8 +24,12 @@ public class Project extends BaseTimeEntity{
     private String name;
 
     private String category;
-    
-    private String contestUrl;
+
+    private Boolean isContest;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "contest_no")
+    private Contest contestNo;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "leader_id")
