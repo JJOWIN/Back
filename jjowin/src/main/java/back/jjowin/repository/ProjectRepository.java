@@ -38,7 +38,7 @@ public class ProjectRepository {
      */
     public List<Project> findAll() {
         // jpql
-        return em.createQuery("select u from User u", Project.class)
+        return em.createQuery("select p from Project p", Project.class)
                 .getResultList();
     }
 
