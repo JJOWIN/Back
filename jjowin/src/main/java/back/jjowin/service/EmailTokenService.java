@@ -27,7 +27,7 @@ public class EmailTokenService {
         Assert.notNull(requestEmailTokenDTO.getUserId(), "userId가 유효하지 않습니다.");
         String local = "http://localhost:8080";
         String server = "http://43.200.200.255:8080";
-        String confirmLink = local + "/confirm-mail?token=";
+        String confirmLink = server + "/confirm-mail?token=";
         // 토큰 생성
         EmailToken emailToken = EmailToken.createEmailToken(requestEmailTokenDTO.getUserId());
         emailTokenRepository.save(emailToken);
