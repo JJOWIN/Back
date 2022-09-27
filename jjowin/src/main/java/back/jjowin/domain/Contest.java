@@ -21,6 +21,8 @@ public class Contest {
 
     private LocalDateTime endDate;
 
+    private String category;
+
     private String organizer;
 
     @Column(length = 5000)

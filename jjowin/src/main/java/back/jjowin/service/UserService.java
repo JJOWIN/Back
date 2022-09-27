@@ -174,4 +174,12 @@ public class UserService {
         return findUser;
     }
 
+    public void setCertEmail(Long id){
+        User findUser = userRepository.findOne(id);
+        if (findUser == null) {
+            throw new IllegalStateException("id를 가진 유저가 존재하지 않습니다.");
+        }
+        findUser.setIsCertMail(true);
+        userRepository.save(findUser);
+    }
 }

@@ -16,4 +16,7 @@ public class ContestRepository {
         return em.createQuery("SELECT C FROM Contest C", Contest.class)
                 .getResultList();
     }
+    public Contest findById(Long id){
+        return em.find(Contest.class, id);
+    }
 }
