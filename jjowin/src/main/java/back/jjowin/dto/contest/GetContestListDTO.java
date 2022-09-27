@@ -11,19 +11,19 @@ public class GetContestListDTO {
     private String title;
     private LocalDateTime startDate;
     private LocalDateTime endDate;
-    private String organizer;
-    private String info;
     private String imageUrl;
     private String homepage;
+    private String category;
+    private Boolean isProgress;
 
-    public GetContestListDTO(Long id, String title, LocalDateTime startDate, LocalDateTime endDate, String organizer, String info, String imageUrl, String homepage) {
+    public GetContestListDTO(Long id, String title, LocalDateTime startDate, LocalDateTime endDate, String imageUrl, String homepage, String category) {
         this.id = id;
         this.title = title;
         this.startDate = startDate;
         this.endDate = endDate;
-        this.organizer = organizer;
-        this.info = info;
         this.imageUrl = imageUrl;
         this.homepage = homepage;
+        this.category = category;
+        this.isProgress = LocalDateTime.now().isAfter(startDate) && LocalDateTime.now().isBefore(endDate);
     }
 }

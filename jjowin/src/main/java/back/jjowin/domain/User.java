@@ -37,11 +37,13 @@ public class User extends BaseTimeEntity {
     //전화번호
     private String phone;
 
+    private Boolean isCertMail;
+
     // 메일 수신 동의
     private Boolean isReceiveMail;
 
     //핸드폰 본인인증 여부
-    private Boolean isCert;
+    private Boolean isCertPhone;
 
     //학교 인증 여부
     private Boolean isSchool;
@@ -91,7 +93,8 @@ public class User extends BaseTimeEntity {
         comments = new ArrayList<>();
         leaderProjects = new ArrayList<>();
         isReceiveMail = false;
-        isCert = false;
+        isCertMail = false;
+        isCertPhone = false;
         isDeleted = false;
         isSchool = false;
     }

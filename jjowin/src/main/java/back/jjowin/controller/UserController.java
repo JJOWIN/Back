@@ -4,6 +4,7 @@ import back.jjowin.domain.BaseResponseBody;
 import back.jjowin.domain.CustomResponseBody;
 import back.jjowin.domain.User;
 import back.jjowin.dto.user.LoginDTO;
+import back.jjowin.dto.user.LoginResultDTO;
 import back.jjowin.dto.user.SignupDTO;
 import back.jjowin.service.UserService;
 import back.jjowin.vo.UserInfoVO;
@@ -38,17 +39,27 @@ public class UserController {
     }
 
     @PostMapping("/user/login")
-    public ResponseEntity<BaseResponseBody> login (@RequestBody LoginDTO loginDTO, HttpServletRequest request){
-        BaseResponseBody responseBody = new BaseResponseBody("로그인 성공");
+    public ResponseEntity<CustomResponseBody<LoginResultDTO>> login (@RequestBody LoginDTO loginDTO, HttpServletRequest request){
+        CustomResponseBody<LoginResultDTO> responseBody = new CustomResponseBody<>("로그인 성공");
+        User loginUser = null;
+        HttpSession session = null;
+        UserInfoVO userInfo = null;
+        LoginResultDTO result = null;
         try {
-            User loginUser = userService.login(loginDTO);
+            loginUser = userService.login(loginDTO);
             if(loginUser == null){
                 throw new IllegalStateException("로그인 실패");
             }
-            HttpSession session = request.getSession();
-            UserInfoVO userInfo = new UserInfoVO(loginUser.getId(), loginUser.getName(), loginUser.getNickname(), loginUser.getIsCert(), loginUser.getIsSchool(), loginUser.getSchoolName(), loginUser.getIsDeleted());
+            session = request.getSession();
+            userInfo = new UserInfoVO(loginUser.getId(), loginUser.getName(), loginUser.getNickname(), loginUser.getIsCertPhone(), loginUser.getIsCertMail(), loginUser.getIsSchool(), loginUser.getSchoolName(), loginUser.getIsDeleted());
             session.setAttribute("userInfo", userInfo);
 
+            result = new LoginResultDTO();
+            result.setIsSchool(loginUser.getIsSchool());
+            result.setSchoolName(loginUser.getSchoolName());
+            result.setIsCertMail(loginUser.getIsCertMail());
+            result.setIsCertPhone(loginUser.getIsCertPhone());
+            responseBody.getList().add(result);
         } catch (IllegalStateException e){
             responseBody.setResultCode(-1);
             responseBody.setResultMsg(e.getMessage());
