@@ -13,6 +13,7 @@ spring:
       mail:
         smtp:
           auth: true
+          starttls:
             enable: true
             required: true
           connectiontimeout: 5000
