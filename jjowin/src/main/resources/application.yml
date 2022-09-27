@@ -1,0 +1,37 @@
+spring:
+  datasource:
+    url: jdbc:mariadb://localhost:3306/jjowin
+    username: root
+    password: 12340119
+    driver-class-name: org.mariadb.jdbc.Driver
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: jjowin23@gmail.com
+    password: ykkxytqwpmncwdft
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+            required: true
+          connectiontimeout: 5000
+          timeout: 5000
+          writetimeout: 5000
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        format_sql: true
+
+
+logging.level:
+  org.hibernate.SQL: debug
+  org.hibernate.type: trace
+server:
+  servlet:
+    session:
+      timeout: 3600 # 세션 만료시간 1시간

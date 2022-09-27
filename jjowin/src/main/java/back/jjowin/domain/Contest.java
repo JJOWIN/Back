@@ -5,6 +5,8 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter @Setter
@@ -21,6 +23,8 @@ public class Contest {
 
     private LocalDateTime endDate;
 
+    private String category;
+
     private String organizer;
 
     @Column(length = 5000)
@@ -29,5 +33,8 @@ public class Contest {
     private String imageUrl;
 
     private String homepage;
+
+    @OneToMany(mappedBy = "contestNo")
+    private List<Project> projects = new ArrayList<>();
 
 }

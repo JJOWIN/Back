@@ -10,7 +10,9 @@ public class UserInfoVO {
 
     private String nickname;
 
-    private boolean isCert;
+    private boolean isCertPhone;
+
+    private boolean isCertMail;
 
     private boolean isSchool;
 
@@ -18,11 +20,12 @@ public class UserInfoVO {
 
     private boolean isDeleted;
 
-    public UserInfoVO(Long id, String name, String nickname, boolean isCert, boolean isSchool, String schoolName, boolean isDeleted) {
+    public UserInfoVO(Long id, String name, String nickname, boolean isCertPhone, boolean isCertMail, boolean isSchool, String schoolName, boolean isDeleted) {
         this.id = id;
         this.name = name;
         this.nickname = nickname;
-        this.isCert = isCert;
+        this.isCertPhone = isCertPhone;
+        this.isCertMail = isCertMail;
         this.isSchool = isSchool;
         this.schoolName = schoolName;
         this.isDeleted = isDeleted;
