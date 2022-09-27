@@ -1,13 +1,13 @@
-package back.jjowin;
-
-import org.junit.jupiter.api.Test;
-import org.springframework.boot.test.context.SpringBootTest;
-
-@SpringBootTest
-class JjowinApplicationTests {
-
-	@Test
-	void contextLoads() {
-	}
-
-}
+//package back.jjowin;
+//
+//import org.junit.jupiter.api.Test;
+//import org.springframework.boot.test.context.SpringBootTest;
+//
+//@SpringBootTest
+//class JjowinApplicationTests {
+//
+//	@Test
+//	void contextLoads() {
+//	}
+//
+//}
