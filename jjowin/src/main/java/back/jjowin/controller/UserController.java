@@ -7,9 +7,10 @@ import back.jjowin.dto.user.LoginDTO;
 import back.jjowin.dto.user.LoginResultDTO;
 import back.jjowin.dto.user.SignupDTO;
 import back.jjowin.service.UserService;
-import back.jjowin.vo.UserInfoVO;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -39,27 +40,24 @@ public class UserController {
     }
 
     @PostMapping("/user/login")
-    public ResponseEntity<CustomResponseBody<LoginResultDTO>> login (@RequestBody LoginDTO loginDTO, HttpServletRequest request){
-        CustomResponseBody<LoginResultDTO> responseBody = new CustomResponseBody<>("로그인 성공");
+    public ResponseEntity<BaseResponseBody> login (@RequestBody LoginDTO loginDTO, HttpServletRequest request){
+        BaseResponseBody responseBody = new CustomResponseBody<>("로그인 성공");
         User loginUser = null;
         HttpSession session = null;
-        UserInfoVO userInfo = null;
-        LoginResultDTO result = null;
+        LoginResultDTO result= null;
+        ResponseCookie loginCookie = null;
         try {
             loginUser = userService.login(loginDTO);
             if(loginUser == null){
                 throw new IllegalStateException("로그인 실패");
             }
-            session = request.getSession();
-            userInfo = new UserInfoVO(loginUser.getId(), loginUser.getName(), loginUser.getNickname(), loginUser.getIsCertPhone(), loginUser.getIsCertMail(), loginUser.getIsSchool(), loginUser.getSchoolName(), loginUser.getIsDeleted());
-            session.setAttribute("userInfo", userInfo);
-
-            result = new LoginResultDTO();
-            result.setIsSchool(loginUser.getIsSchool());
-            result.setSchoolName(loginUser.getSchoolName());
-            result.setIsCertMail(loginUser.getIsCertMail());
-            result.setIsCertPhone(loginUser.getIsCertPhone());
-            responseBody.getList().add(result);
+            loginCookie = ResponseCookie.from("UserInfo", loginUser.getId().toString())
+                    .httpOnly(false)
+                    .secure(false)
+                    .path("/")
+                    .maxAge(60)
+                    .sameSite("None")
+                    .build();
         } catch (IllegalStateException e){
             responseBody.setResultCode(-1);
             responseBody.setResultMsg(e.getMessage());
@@ -69,7 +67,9 @@ public class UserController {
             responseBody.setResultMsg(e.getMessage());
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(responseBody);
         }
-        return ResponseEntity.ok().body(responseBody);
+        return ResponseEntity.ok()
+                .header(HttpHeaders.SET_COOKIE, loginCookie.toString())
+                .body(responseBody);
     }
 
     @GetMapping("/user/nickname/{nickname}")
@@ -115,16 +115,10 @@ public class UserController {
     }
 
     @GetMapping("/user/{userId}")
-    public ResponseEntity<CustomResponseBody<User>> getUserInfo (
-             @SessionAttribute(name = "userInfo", required = false) UserInfoVO userInfo
-            ,@PathVariable(name = "userId") Long id){
+    public ResponseEntity<CustomResponseBody<User>> getUserInfo (@PathVariable(name = "userId") Long id,
+                                                                 @CookieValue(name = "UserInfo") String cookieUserID){
         CustomResponseBody<User> responseBody = new CustomResponseBody<>("");
         try{
-            if(userInfo == null){
-                responseBody.setResultCode(-10000);
-                responseBody.setResultMsg("로그인이 필요한 기능입니다.");
-                return ResponseEntity.badRequest().body(responseBody);
-            }
             User findUser = userService.getUserInfo(id);
             responseBody.getList().add(findUser);
         } catch (IllegalStateException e){
