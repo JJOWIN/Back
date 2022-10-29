@@ -2,12 +2,13 @@ package back.jjowin.controller;
 
 import back.jjowin.domain.BaseResponseBody;
 import back.jjowin.domain.CustomResponseBody;
+import back.jjowin.domain.User;
 import back.jjowin.dto.project.AllToyProjectListDTO;
 import back.jjowin.dto.project.ProjectCreateDTO;
+import back.jjowin.repository.UserRepository;
 import back.jjowin.service.ProjectService;
 import back.jjowin.service.ProjectSkillService;
 import back.jjowin.service.RecruitInfoService;
-import back.jjowin.vo.UserInfoVO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,27 +22,36 @@ public class ProjectController {
     private final ProjectService projectService;
     private final ProjectSkillService projectSkillService;
     private final RecruitInfoService recruitInfoService;
-
+    private final UserRepository userRepository;
     /**
      * 프로젝트 등록
      * @param projectCreateDTO
-     * @param userInfo
      * @return
      */
     @PostMapping("/projects")
     public ResponseEntity<BaseResponseBody> register (
             @RequestBody ProjectCreateDTO projectCreateDTO,
-            @SessionAttribute(name = "userInfo", required = false) UserInfoVO userInfo){
+            @CookieValue(name = "UserInfo", required = false) String cookieUserId){
         BaseResponseBody responseBody = new BaseResponseBody("프로젝트 등록 성공");
+        User findUser = null;
         try {
-            if(userInfo == null){
+            if(cookieUserId.isEmpty()){
                 responseBody.setResultCode(-10000);
                 responseBody.setResultMsg("로그인이 필요한 기능입니다.");
                 return ResponseEntity.badRequest().body(responseBody);
             }
-            projectCreateDTO.setLeader(userInfo.getId());
-            if (projectCreateDTO.getJoinSchool() == true && userInfo.isSchool() == true) {
-                projectCreateDTO.setSchoolName(userInfo.getSchoolName());
+            findUser = userRepository.findOne(Long.parseLong(cookieUserId));
+            if(findUser == null){
+                responseBody.setResultCode(-10001);
+                responseBody.setResultMsg("유효하지 않은 사용자입니다.");
+            }
+            projectCreateDTO.setLeader(Long.parseLong(cookieUserId));
+            if(projectCreateDTO.getJoinSchool()){
+                if(!findUser.getIsSchool()){
+                    responseBody.setResultCode(-10002);
+                    responseBody.setResultMsg("학교 인증이 필요합니다.");
+                }
+                projectCreateDTO.setSchoolName(findUser.getSchoolName());
             }
 
             projectService.register(projectCreateDTO);
